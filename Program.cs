@@ -1,49 +1,72 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Data.SqlTypes;
 
-namespace Demo_LINQ
+namespace Bridge
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("LINQ Implemetation inc#");
-
-            //Data Source
-            int[] scores = new int[] { 10, 20, 30, 40, 50 };
-            string[] fruits = new string []{ "apple", "bananna", "grapes " };
-
-            //expression
-
-            //IEnumerable <int> ScoreQuery=
-            //from score in scores
-            //  where score > 34
-            //orderby score descending
-            // select score;
-
-            //query
-
-            IEnumerable<string> FruitsQuery =
-                from fruit in fruits
-                where fruit is"bananna" or "grapes"
-                select fruit;
-
-            foreach(var item in FruitsQuery)
-            {
-                Console.WriteLine("Values:{0}\n", item);
-            }
-
-
-
-
-            //foreach (int  item in ScoreQuery)
-            //{
-              //  Console.WriteLine("Values:{0}\n", item);
-            //}
-                       
+            Abstraction ab = new RefinedAbstraction();
+            // Set implementation and call
+            ab.Implementor = new ConcreteImplementorA();
+            ab.Operation();
+            // Change implemention and call
+            ab.Implementor = new ConcreteImplementorB();
+            ab.Operation();
+            // Wait for user
+            Console.ReadKey();
+        }
+    }
+    /// <summary>
+    /// The 'Abstraction' class
+    /// </summary>
+    public class Abstraction
+    {
+        protected Implementor implementor;
+        public Implementor Implementor
+        {
+            set { implementor = value; }
+        }
+        public virtual void Operation()
+        {
+            implementor.Operation();
+        }
+    }
+    /// <summary>
+    /// The 'Implementor' abstract class
+    /// </summary>
+    public abstract class Implementor
+    {
+        public abstract void Operation();
+    }
+    /// <summary>
+    /// The 'RefinedAbstraction' class
+    /// </summary>
+    public class RefinedAbstraction : Abstraction
+    {
+        public override void Operation()
+        {
+            implementor.Operation();
+        }
+    }
+    /// <summary>
+    /// The 'ConcreteImplementorA' class
+    /// </summary>
+    public class ConcreteImplementorA : Implementor
+    {
+        public override void Operation()
+        {
+            Console.WriteLine("sravani");
+        }
+    }
+    /// <summary>
+    /// The 'ConcreteImplementorB' class
+    /// </summary>
+    public class ConcreteImplementorB : Implementor
+    {
+        public override void Operation()
+        {
+            Console.WriteLine("foodie lover");
         }
     }
 }
